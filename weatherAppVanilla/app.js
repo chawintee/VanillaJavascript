@@ -7,6 +7,8 @@ window.addEventListener("load", () => {
   );
   let temperatureDegree = document.querySelector(".temperature-degree");
   let locationTimezone = document.querySelector('.location-timezone')
+  let temperatureSection = document.querySelector('.temperature')
+  const temperatureSpan = document.querySelector('.temperature span')
 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -33,18 +35,37 @@ window.addEventListener("load", () => {
           const { temp } = data.main;
           const { description, icon } = data.weather[0];
           //Set DOM Elements from the API
-          temperatureDegree.textContent = Math.round((((temp * 9/5 ) - 459.67)*100)/100);
+          //FORMULA FOR Fahrenheit
+          let tempFahrenheit = Math.round((((temp * 9/5 ) - 459.67)*100)/100);
+
+          temperatureDegree.textContent = tempFahrenheit;
           temperatureDescription.textContent = description;
           locationTimezone.textContent = data.timezone;
 
-          //setIconsYoutube
-        //   setIconsYoutube(icon, document.querySelector('.icon1'));
+          //FORMULA FOR CELSIUS
+          let tempCelsius = Math.round((((temp - 273.15)*100)/100));
+          console.log(tempCelsius);
 
-          //setIcon
-        //   console.log(setIcons(icon));
+
+        //setIconsYoutube
+            //setIconsYoutube(icon, document.querySelector('.icon1'));
+
+        //setIcon
+          //console.log(setIcons(icon));
           let a = setIcons(icon)
           console.log(a);
           document.querySelector(".icon").src = setIcons(icon)
+
+        //Change temperature to Celsius/Farenheit
+         temperatureSection.addEventListener('click', () => {
+             if(temperatureSpan.textContent === "F"){
+                 temperatureSpan.textContent = "C";
+                 temperatureDegree.textContent = tempCelsius;
+             }else {
+                 temperatureSpan.textContent = "F"
+                 temperatureDegree.textContent = tempFahrenheit;
+             }
+         })
           
         });
     });
